@@ -7,26 +7,27 @@ function App() {
     const [allTodo, setTodo] = useState([]);
     const [newTitle, setNewTitle] = useState("");
     const [newPriority, setNewPriority] = useState("");
+    const [CompletedTodo, setCompletedTodo] = useState([]);
 
-const handleAddTodo = () => {
-    if (!newTitle.trim() || !newPriority.trim()) {
-        alert("Please enter a title and select a priority before adding a task.");
-        return;
-    }
+    const handleAddTodo = () => {
+        if (!newTitle.trim() || !newPriority.trim()) {
+            alert("Please enter a title and select a priority before adding a task.");
+            return;
+        }
 
-    let newTodoItem = {
-        title: newTitle,
-        priority: newPriority,
+        let newTodoItem = {
+            title: newTitle,
+            priority: newPriority,
+        };
+
+        let updateTodoArr = [...allTodo];
+        updateTodoArr.push(newTodoItem);
+        setTodo(updateTodoArr);
+        setNewTitle("");
+        setNewPriority("");
+
+        localStorage.setItem("todoList", JSON.stringify(updateTodoArr));
     };
-
-    let updateTodoArr = [...allTodo];
-    updateTodoArr.push(newTodoItem);
-    setTodo(updateTodoArr);
-    setNewTitle("");
-    setNewPriority("");
-
-    localStorage.setItem("todoList", JSON.stringify(updateTodoArr));
-};
 
     useEffect(() => {
         let saveTodo = JSON.parse(localStorage.getItem("todoList"));
@@ -35,10 +36,48 @@ const handleAddTodo = () => {
         }
     }, []);
 
+  const handleToDoDelete = (index) => {
+      let reducedTodos = [...allTodo];
+      reducedTodos.splice(index, 1);
+      // console.log (index);
+
+      // console.log (reducedTodos);
+      localStorage.setItem("todoList", JSON.stringify(reducedTodos));
+      setTodo(reducedTodos);
+  };
+
+    const handleComplete = (index) => {
+        let now = new Date();
+        let dd = now.getDate();
+        let mm = now.getMonth() + 1;
+        let yyyy = now.getFullYear();
+        let h = now.getHours();
+        let m = now.getMinutes();
+        let s = now.getSeconds();
+        let completedOn = dd + "-" + mm + "-" + yyyy + " at " + h + ":" + m + ":" + s;
+
+        let filteredItem = {
+            ...allTodo[index],
+            completedOn: completedOn,
+        };
+
+        let updatedCompletedArr = [...CompletedTodo];
+        updatedCompletedArr.push(filteredItem);
+        setCompletedTodo(updatedCompletedArr);
+    };
+
     const priorityColors = {
         High: "green",
         Medium: "darkBlue",
         Low: "red",
+    };
+
+    const handleCompletedTodoDelete = (index) => {
+        let reducedCompletedTodos = [...CompletedTodo];
+        reducedCompletedTodos.splice(index, 1);
+        // console.log (reducedCompletedTodos);
+        localStorage.setItem("completedTodos", JSON.stringify(reducedCompletedTodos));
+        setCompletedTodo(reducedCompletedTodos);
     };
 
     return (
@@ -94,21 +133,51 @@ const handleAddTodo = () => {
                     </button>
                 </div>
                 <div className="todo-list">
-                    {allTodo.map((item, index) => {
-                        return (
+                    {isCompleteScreen === false &&
+                        allTodo.map((item, index) => (
                             <div className="todo-list-item" key={index}>
-                                <h3>{item.title}</h3>
-                                <p style={{ color: `${priorityColors[item.priority]}` }}>
-                                    {item.priority}
-                                </p>
-
                                 <div>
-                                    <AiOutlineDelete className="icon" />
-                                    <BsCheckLg className="check-icon" />
+                                    <h3>{item.title}</h3>
+                                    <p style={{ color: `${priorityColors[item.priority]}` }}>
+                                        {item.priority}
+                                    </p>
+                                </div>
+                                <div>
+                                    <AiOutlineDelete
+                                        title="Delete?"
+                                        className="icon"
+                                        onClick={() => handleToDoDelete(index)}
+                                    />
+                                    <BsCheckLg
+                                        title="Completed?"
+                                        className=" check-icon"
+                                        onClick={() => handleComplete(index)}
+                                    />
                                 </div>
                             </div>
-                        );
-                    })}
+                        ))}
+
+                    {isCompleteScreen === true &&
+                        CompletedTodo.map((item, index) => (
+                            <div className="todo-list-item" key={index}>
+                                <div>
+                                    <h3>{item.title}</h3>
+                                    <p style={{ color: `${priorityColors[item.priority]}` }}>
+                                        {item.priority}
+                                    </p>
+                                    <p>
+                                        {" "}
+                                        <i>Completed at: {item.completedOn}</i>
+                                    </p>
+                                </div>
+                                <div>
+                                    <AiOutlineDelete
+                                        className="icon"
+                                        onClick={() => handleCompletedTodoDelete(index)}
+                                    />
+                                </div>
+                            </div>
+                        ))}
                 </div>
             </div>
         </div>
