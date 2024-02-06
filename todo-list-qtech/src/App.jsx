@@ -8,17 +8,25 @@ function App() {
     const [newTitle, setNewTitle] = useState("");
     const [newPriority, setNewPriority] = useState("");
 
-    const handleAddTodo = () => {
-        let newTodoItem = {
-            title: newTitle,
-            priority: newPriority,
-        };
+const handleAddTodo = () => {
+    if (!newTitle.trim() || !newPriority.trim()) {
+        alert("Please enter a title and select a priority before adding a task.");
+        return;
+    }
 
-        let updateTodoArr = [...allTodo];
-        updateTodoArr.push(newTodoItem);
-        setTodo(updateTodoArr);
-        localStorage.setItem("todoList", JSON.stringify(updateTodoArr));
+    let newTodoItem = {
+        title: newTitle,
+        priority: newPriority,
     };
+
+    let updateTodoArr = [...allTodo];
+    updateTodoArr.push(newTodoItem);
+    setTodo(updateTodoArr);
+    setNewTitle("");
+    setNewPriority("");
+
+    localStorage.setItem("todoList", JSON.stringify(updateTodoArr));
+};
 
     useEffect(() => {
         let saveTodo = JSON.parse(localStorage.getItem("todoList"));
@@ -51,14 +59,15 @@ function App() {
                     <div className="todo-input-item">
                         <label htmlFor="priority">Priority</label>
                         <select
-                            className=""
                             name="priority"
                             value={newPriority}
                             onChange={(e) => setNewPriority(e.target.value)}
                         >
-                            <option>Select</option>
+                            <option value="" disabled>
+                                Select
+                            </option>
                             <option value="High">High</option>
-                            <option value="Medium">medium</option>
+                            <option value="Medium">Medium</option>
                             <option value="Low">Low</option>
                         </select>
                     </div>
