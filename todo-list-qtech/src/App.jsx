@@ -1,12 +1,14 @@
-import "./App.css";
 import { useState } from "react";
+import { AiOutlineDelete } from "react-icons/ai";
+import { BsCheckLg } from "react-icons/bs";
+import "./App.css";
 function App() {
     const [isCompleteScreen, setIsCompleteScreen] = useState(false);
     return (
         <div className="App">
             <h1> My Todo</h1>
 
-            <div className="todo-warper">
+            <div className="todo-wrapper">
                 <div className="todo-input">
                     <div className="todo-input-item">
                         <label htmlFor="Title">Title</label>
@@ -41,9 +43,16 @@ function App() {
                         Completed
                     </button>
                 </div>
-                <div className="todo-list-item">
-                    <h3>Task 1</h3>
-                    <p>Priority</p>
+                <div className="todo-list">
+                    <div className="todo-list-item">
+                        <h3>Task 1</h3>
+                        <p>Priority</p>
+
+                        <div>
+                            <AiOutlineDelete className="icon" />
+                            <BsCheckLg className="check-icon" />
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

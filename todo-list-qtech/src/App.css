@@ -41,14 +41,8 @@ h1 {
     font-weight: bold;
 }
 
-.todo-input-item input {
-    border: none;
-    padding: 8px;
-    width: 250px;
-}
-
 .todo-input-item select {
-    margin-top: 10%;
+    margin-top: 12%;
     border: none;
     padding: 8px;
     width: 250px;
@@ -56,6 +50,12 @@ h1 {
 
 .todo-input-item select:focus {
     outline: 2px solid rgb(0, 207, 230);
+}
+
+.todo-input-item input {
+    border: none;
+    padding: 8px;
+    width: 250px;
 }
 
 .todo-input-item input:focus {
@@ -76,11 +76,6 @@ h1 {
 .primaryBtn:hover {
     background-color: rgb(4, 192, 104);
 }
-
-.btn-area {
-    margin-bottom: 10px;
-}
-
 .secondaryBtn {
     background-color: rgb(29, 213, 226);
     color: white;
@@ -89,6 +84,14 @@ h1 {
     padding: 10px;
     width: fit-content;
     cursor: pointer;
+}
+
+.active {
+    background-color: #b5f2fd;
+}
+
+.btn-area {
+    margin-bottom: 15px;
 }
 
 .btn-area .active {
