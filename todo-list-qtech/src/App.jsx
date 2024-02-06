@@ -8,6 +8,7 @@ function App() {
     const [newTitle, setNewTitle] = useState("");
     const [newPriority, setNewPriority] = useState("");
     const [CompletedTodo, setCompletedTodo] = useState([]);
+    const [completedCount, setCompletedCount] = useState(0);
 
     const handleAddTodo = () => {
         if (!newTitle.trim() || !newPriority.trim()) {
@@ -36,15 +37,12 @@ function App() {
         }
     }, []);
 
-  const handleToDoDelete = (index) => {
-      let reducedTodos = [...allTodo];
-      reducedTodos.splice(index, 1);
-      // console.log (index);
-
-      // console.log (reducedTodos);
-      localStorage.setItem("todoList", JSON.stringify(reducedTodos));
-      setTodo(reducedTodos);
-  };
+    const handleToDoDelete = (index) => {
+        let reducedTodos = [...allTodo];
+        reducedTodos.splice(index, 1);
+        localStorage.setItem("todoList", JSON.stringify(reducedTodos));
+        setTodo(reducedTodos);
+    };
 
     const handleComplete = (index) => {
         let now = new Date();
@@ -64,6 +62,7 @@ function App() {
         let updatedCompletedArr = [...CompletedTodo];
         updatedCompletedArr.push(filteredItem);
         setCompletedTodo(updatedCompletedArr);
+        setCompletedCount((prevCount) => prevCount + 1);
     };
 
     const priorityColors = {
@@ -119,17 +118,17 @@ function App() {
                 <div className="btn-area">
                     <button
                         type="button"
-                        className={`secondaryBtn ${isCompleteScreen === false && "active"} }`}
+                        className={`secondaryBtn ${!isCompleteScreen && "active"}`}
                         onClick={() => setIsCompleteScreen(false)}
                     >
                         Todo
                     </button>
                     <button
                         type="button"
-                        className={`secondaryBtn ${isCompleteScreen === true && "active"}`}
+                        className={`secondaryBtn ${isCompleteScreen && "active"}`}
                         onClick={() => setIsCompleteScreen(true)}
                     >
-                        Completed
+                        Completed ({completedCount})
                     </button>
                 </div>
                 <div className="todo-list">
