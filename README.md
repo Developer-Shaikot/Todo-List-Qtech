@@ -7,7 +7,6 @@
   - [Introduction](#introduction)
   - [Features](#features)
   - [Developerguide](#Developerguide)
-  - [Usage](#usage)
   
 
 ## Introduction
@@ -20,6 +19,7 @@ This is a simple Todo List application using React.
 -  Implemented the ability to edit an existing task.
 -  Implemented the ability to mark a task as completed.
 -  Implemented the ability to delete a task.
+-  Additionally Completed task will show current dd/mm/yyyy and Time.
 
 ## Features
 <div>
