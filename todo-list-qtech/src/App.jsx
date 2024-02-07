@@ -67,6 +67,15 @@ const App = () => {
         Low: "red",
     };
 
+    const handleEdit = (oldItem, editedTitle, editedPriority) => {
+        const updatedTodos = allTodo.map((item) =>
+            item === oldItem ? { ...item, title: editedTitle, priority: editedPriority } : item
+        );
+
+        setTodo(updatedTodos);
+        localStorage.setItem("todoList", JSON.stringify(updatedTodos));
+    };
+
     return (
         <div className="App">
             <h1> My Todo</h1>
@@ -97,6 +106,7 @@ const App = () => {
                             todos={allTodo}
                             onDelete={handleToDoDelete}
                             onComplete={handleComplete}
+                            onEdit={handleEdit}
                             priorityColors={priorityColors}
                         />
                     )}
@@ -105,6 +115,8 @@ const App = () => {
                         <CompletedTodoList
                             completedTodos={CompletedTodo}
                             onDelete={handleCompletedTodoDelete}
+                            onEdit={handleEdit}
+                            priorityColors={priorityColors}
                         />
                     )}
                 </div>

@@ -9,7 +9,7 @@ import PropTypes from "prop-types";
  };
 
 
-const CompletedTodoList = ({ completedTodos, onDelete,  }) => {
+const CompletedTodoList = ({ completedTodos, onDelete, onEdit }) => {
     return (
         <div className="todo-list">
             {completedTodos.map((item, index) => (
@@ -17,6 +17,7 @@ const CompletedTodoList = ({ completedTodos, onDelete,  }) => {
                     key={index}
                     item={item}
                     onDelete={() => onDelete(index)}
+                    onEdit={onEdit}
                     priorityColors={priorityColors}
                     isCompleted={true}
                 />
@@ -24,6 +25,7 @@ const CompletedTodoList = ({ completedTodos, onDelete,  }) => {
         </div>
     );
 };
+
 
 CompletedTodoList.propTypes = {
     completedTodos: PropTypes.arrayOf(
@@ -33,6 +35,7 @@ CompletedTodoList.propTypes = {
             completedOn: PropTypes.string.isRequired,
         })
     ).isRequired,
+    onEdit: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,
     priorityColors: PropTypes.object.isRequired,
 };

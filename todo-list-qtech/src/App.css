@@ -152,3 +152,22 @@ h1 {
 .label-High {
     background-color: #42a942;
 }
+.todo-input-items{
+    margin-right: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.todo-input-items input {
+    border: none;
+    padding: 8px;
+    width: 250px;
+    margin-bottom: 2%;
+}
+.todo-input-items select {
+    border: none;
+    padding: 8px;
+    width: 250px;
+    margin-bottom: 2%;
+}
