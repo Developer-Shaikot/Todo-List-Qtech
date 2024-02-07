@@ -4,10 +4,9 @@
 ## Table of Contents
 
 - [Project Title](#pTodo-List-Qtech)
-  - [Table of Contents](#table-of-contents)
   - [Introduction](#introduction)
   - [Features](#features)
-  - [Installation](#installation)
+  - [iDeveloperguide](#iDeveloperguide)
   - [Usage](#usage)
   
 
@@ -41,7 +40,7 @@ This is a simple Todo List application using React.
 
 
 
-### Developer guide
+### iDeveloperguide
 
 -   Clone the project in your local machine
 -   Install all the dependencies using `npm install`
