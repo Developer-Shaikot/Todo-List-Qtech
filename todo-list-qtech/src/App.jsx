@@ -1,34 +1,15 @@
 import { useEffect, useState } from "react";
-import { AiOutlineDelete } from "react-icons/ai";
-import { BsCheckLg } from "react-icons/bs";
+import TodoList from "./components/TodoList";
+import CompletedTodoList from "./components/CompletedTodoList";
+import TodoForm from "./components/TodoForm";
 import "./App.css";
-function App() {
+
+const App = () => {
     const [isCompleteScreen, setIsCompleteScreen] = useState(false);
     const [allTodo, setTodo] = useState([]);
-    const [newTitle, setNewTitle] = useState("");
-    const [newPriority, setNewPriority] = useState("");
+
     const [CompletedTodo, setCompletedTodo] = useState([]);
     const [completedCount, setCompletedCount] = useState(0);
-
-    const handleAddTodo = () => {
-        if (!newTitle.trim() || !newPriority.trim()) {
-            alert("Please enter a title and select a priority before adding a task.");
-            return;
-        }
-
-        let newTodoItem = {
-            title: newTitle,
-            priority: newPriority,
-        };
-
-        let updateTodoArr = [...allTodo];
-        updateTodoArr.push(newTodoItem);
-        setTodo(updateTodoArr);
-        setNewTitle("");
-        setNewPriority("");
-
-        localStorage.setItem("todoList", JSON.stringify(updateTodoArr));
-    };
 
     useEffect(() => {
         let saveTodo = JSON.parse(localStorage.getItem("todoList"));
@@ -36,6 +17,14 @@ function App() {
             setTodo(saveTodo);
         }
     }, []);
+
+    const handleAddTodo = (newTodoItem) => {
+        let updateTodoArr = [...allTodo];
+        updateTodoArr.push(newTodoItem);
+        setTodo(updateTodoArr);
+
+        localStorage.setItem("todoList", JSON.stringify(updateTodoArr));
+    };
 
     const handleToDoDelete = (index) => {
         let reducedTodos = [...allTodo];
@@ -65,18 +54,17 @@ function App() {
         setCompletedCount((prevCount) => prevCount + 1);
     };
 
+    const handleCompletedTodoDelete = (index) => {
+        let reducedCompletedTodos = [...CompletedTodo];
+        reducedCompletedTodos.splice(index, 1);
+        localStorage.setItem("completedTodos", JSON.stringify(reducedCompletedTodos));
+        setCompletedTodo(reducedCompletedTodos);
+    };
+
     const priorityColors = {
         High: "green",
         Medium: "darkBlue",
         Low: "red",
-    };
-
-    const handleCompletedTodoDelete = (index) => {
-        let reducedCompletedTodos = [...CompletedTodo];
-        reducedCompletedTodos.splice(index, 1);
-        // console.log (reducedCompletedTodos);
-        localStorage.setItem("completedTodos", JSON.stringify(reducedCompletedTodos));
-        setCompletedTodo(reducedCompletedTodos);
     };
 
     return (
@@ -84,37 +72,8 @@ function App() {
             <h1> My Todo</h1>
 
             <div className="todo-wrapper">
-                <div className="todo-input">
-                    <div className="todo-input-item">
-                        <label htmlFor="Title">Task</label>
-                        <input
-                            type="text"
-                            value={newTitle}
-                            onChange={(e) => setNewTitle(e.target.value)}
-                            placeholder="What's the title?"
-                        />
-                    </div>
-                    <div className="todo-input-item">
-                        <label htmlFor="priority">Priority</label>
-                        <select
-                            name="priority"
-                            value={newPriority}
-                            onChange={(e) => setNewPriority(e.target.value)}
-                        >
-                            <option value="" disabled>
-                                Select
-                            </option>
-                            <option value="High">High</option>
-                            <option value="Medium">Medium</option>
-                            <option value="Low">Low</option>
-                        </select>
-                    </div>
-                    <div className="todo-input-item">
-                        <button type="button" className="primaryBtn" onClick={handleAddTodo}>
-                            Add
-                        </button>
-                    </div>
-                </div>
+                <TodoForm onAddTodo={handleAddTodo} />
+
                 <div className="btn-area">
                     <button
                         type="button"
@@ -131,55 +90,27 @@ function App() {
                         Completed ({completedCount})
                     </button>
                 </div>
-                <div className="todo-list">
-                    {isCompleteScreen === false &&
-                        allTodo.map((item, index) => (
-                            <div className="todo-list-item" key={index}>
-                                <div>
-                                    <h3>{item.title}</h3>
-                                    <p style={{ color: `${priorityColors[item.priority]}` }}>
-                                        {item.priority}
-                                    </p>
-                                </div>
-                                <div>
-                                    <AiOutlineDelete
-                                        title="Delete?"
-                                        className="icon"
-                                        onClick={() => handleToDoDelete(index)}
-                                    />
-                                    <BsCheckLg
-                                        title="Completed?"
-                                        className=" check-icon"
-                                        onClick={() => handleComplete(index)}
-                                    />
-                                </div>
-                            </div>
-                        ))}
 
-                    {isCompleteScreen === true &&
-                        CompletedTodo.map((item, index) => (
-                            <div className="todo-list-item" key={index}>
-                                <div>
-                                    <h3>{item.title}</h3>
-                                    <p style={{ color: `${priorityColors[item.priority]}` }}>
-                                        {item.priority}
-                                    </p>
-                                    <p>
-                                        {" "}
-                                        <i>Completed at: {item.completedOn}</i>
-                                    </p>
-                                </div>
-                                <div>
-                                    <AiOutlineDelete
-                                        className="icon"
-                                        onClick={() => handleCompletedTodoDelete(index)}
-                                    />
-                                </div>
-                            </div>
-                        ))}
+                <div className="todo-list">
+                    {isCompleteScreen === false && (
+                        <TodoList
+                            todos={allTodo}
+                            onDelete={handleToDoDelete}
+                            onComplete={handleComplete}
+                            priorityColors={priorityColors}
+                        />
+                    )}
+
+                    {isCompleteScreen === true && (
+                        <CompletedTodoList
+                            completedTodos={CompletedTodo}
+                            onDelete={handleCompletedTodoDelete}
+                        />
+                    )}
                 </div>
             </div>
         </div>
     );
-}
+};
+
 export default App;
